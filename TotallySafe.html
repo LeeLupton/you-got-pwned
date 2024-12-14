@@ -100,8 +100,8 @@
 </head>
 <body>
   <!-- Main Content -->
-  <h1>YOU GOT PWNED!</h1>
-  <p>This is a security audit! Report this breach immediately!</p>
+  <h1 id="main-title">YOU GOT PWNED!</h1>
+  <p id="main-message">This is a security audit! Report this breach immediately!</p>
 
   <!-- Popups -->
   <div id="popup-container"></div>
@@ -153,11 +153,12 @@
 
     function show404Page() {
       const errorPage = document.getElementById("error-page");
-      const mainContent = document.body;
+      const mainTitle = document.getElementById("main-title");
+      const mainMessage = document.getElementById("main-message");
 
       // Hide main content and show error page
-      document.querySelector("h1").classList.add("hidden");
-      document.querySelector("p").classList.add("hidden");
+      mainTitle.classList.add("hidden");
+      mainMessage.classList.add("hidden");
       errorPage.classList.remove("hidden");
     }
 
