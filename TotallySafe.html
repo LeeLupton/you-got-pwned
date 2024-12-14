@@ -28,124 +28,117 @@
       color: white;
     }
 
-    /* Fake Popup */
+    /* Fake Popups */
     .popup {
-      position: absolute; /* This ensures the popup can be placed anywhere */
-      width: 300px;
-      height: auto;
+      position: absolute;
+      width: 200px;
+      height: 150px;
       background: rgba(0, 0, 0, 0.8);
       border: 2px solid red;
       box-shadow: 0 0 20px red;
       color: white;
-      padding: 20px;
+      padding: 10px;
       font-size: 1em;
-      text-align: center;
+      animation: popup 0.8s ease-out forwards;
       z-index: 9999;
+      overflow-wrap: break-word;
     }
 
     .popup h2 {
-      font-size: 1.5em;
+      font-size: 1.2em;
       margin: 0;
       text-shadow: 0 0 5px red;
     }
 
     .popup p {
-      font-size: 1em;
+      font-size: 0.9em;
       margin: 5px 0;
     }
 
-    /* Glitch Effect */
+    /* Glitch Effect Styles */
     .glitch {
       position: absolute;
       color: lime;
       font-size: calc(10px + 2vw);
       font-weight: bold;
       transform: rotate(0deg);
+      animation: flicker 0.2s infinite;
     }
   </style>
 </head>
 <body>
-  <!-- Main Content -->
-  <div id="main-content">
-    <h1>YOU GOT PWNED!</h1>
-    <p>This is a security audit! Report this breach immediately!</p>
-  </div>
+  <h1>YOU GOT PWNED!</h1>
+  <p>This is a security audit! Report this breach immediately!</p>
 
-  <!-- Popups -->
-  <div id="popup-container"></div>
-
+  <!-- Background Chaos -->
   <script>
-    const popupMessages = [
-      { title: "CRITICAL ERROR!", message: "Your system is compromised!" },
-      { title: "SYSTEM BREACH DETECTED!", message: "Unauthorized access identified." },
-      { title: "VIRUS FOUND!", message: "Malicious software detected." },
-      { title: "UNAUTHORIZED ACCESS!", message: "Admin credentials exposed!" }
-    ];
+    let popupCount = 0;
+    const maxPopups = 8; // Limit to 8 popups
 
-    let currentPopup = 0;
+    function createPopup() {
+      const messages = [
+        "CRITICAL ERROR!",
+        "SYSTEM BREACH DETECTED!",
+        "ADMIN PASSWORD EXPOSED!",
+        "UNAUTHORIZED ACCESS!",
+        "VIRUS FOUND!",
+        "NETWORK FAILURE!"
+      ];
 
-    function getRandomPosition() {
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const x = Math.random() * (viewportWidth - 320); // Subtract 320px (popup width + margin)
-      const y = Math.random() * (viewportHeight - 120); // Subtract 120px (popup height + margin)
-      return { x, y };
-    }
+      if (popupCount < maxPopups) {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    function showPopup() {
-      if (currentPopup < popupMessages.length) {
-        const popup = document.createElement("div");
-        popup.className = "popup";
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
+        popup.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
 
-        const title = document.createElement("h2");
-        title.textContent = popupMessages[currentPopup].title;
+        popup.innerHTML = `
+          <h2>${randomMessage}</h2>
+          <p>Your system is at risk! Act now!</p>
+        `;
 
-        const message = document.createElement("p");
-        message.textContent = popupMessages[currentPopup].message;
-
-        popup.appendChild(title);
-        popup.appendChild(message);
-
-        // Set random position
-        const { x, y } = getRandomPosition();
-        popup.style.left = `${x}px`;
-        popup.style.top = `${y}px`;
-
-        // Add popup to body (not container, as container might interfere with positioning)
         document.body.appendChild(popup);
+        popupCount++;
 
-        // Move to the next popup
-        currentPopup++;
-
-        if (currentPopup < popupMessages.length) {
-          setTimeout(showPopup, 3000); // Delay before the next popup
+        // Spawn the next popup after 3 seconds
+        if (popupCount < maxPopups) {
+          setTimeout(createPopup, 3000);
+        } else {
+          // Redirect to 404.html after all popups
+          setTimeout(() => {
+            window.location.href = "404.html";
+          }, 3000);
         }
       }
     }
 
+    // Start creating popups
+    setTimeout(createPopup, 2000);
+
     function createGlitchEffect() {
       const randomText = "█▓▒░▉▊▋▌▍▌▒░█▓";
-      const glitch = document.createElement("div");
-      glitch.className = "glitch";
+      const glitch = document.createElement('div');
+      glitch.className = 'glitch';
       glitch.style.left = `${Math.random() * 100}vw`;
       glitch.style.top = `${Math.random() * 100}vh`;
       glitch.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
       glitch.textContent = randomText[Math.floor(Math.random() * randomText.length)];
 
       document.body.appendChild(glitch);
-      setTimeout(() => glitch.remove(), 500); // Remove glitch after 500ms
+      setTimeout(() => glitch.remove(), 300); // Remove glitch after 300ms
     }
 
-    // Redirect to 404.html after 15 seconds
-    setTimeout(() => {
-      window.location.href = "404.html";
-    }, 15000);
-
     // Add glitch effects continuously
-    setInterval(createGlitchEffect, 1000); // Glitch spawns once every second
+    setInterval(createGlitchEffect, 100);
 
-    // Start showing popups
-    setTimeout(showPopup, 2000);
+    function flashBackground() {
+      document.body.style.backgroundColor = ['black', 'red', 'lime', 'darkred'][Math.floor(Math.random() * 4)];
+      setTimeout(() => (document.body.style.backgroundColor = 'black'), 100);
+    }
+
+    // Random background flashes
+    setInterval(flashBackground, 1000);
   </script>
 </body>
 </html>
