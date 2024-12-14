@@ -13,6 +13,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden; /* Prevent scrolling */
+      transition: all 1s ease-in-out; /* Smooth transition for 404 effect */
     }
 
     h1 {
@@ -26,7 +27,6 @@
     p {
       font-size: 2em;
       text-align: center;
-      animation: slide-in 2s ease-out forwards;
       color: white;
     }
 
@@ -43,123 +43,133 @@
       100% { transform: scale(1); }
     }
 
-    /* Fake Popups */
+    /* Fake Popup */
     .popup {
-      position: absolute;
-      width: 200px;
-      height: 150px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: auto;
       background: rgba(0, 0, 0, 0.8);
       border: 2px solid red;
       box-shadow: 0 0 20px red;
       color: white;
-      padding: 10px;
+      padding: 20px;
       font-size: 1em;
       animation: popup 0.8s ease-out forwards;
       z-index: 9999;
-      overflow-wrap: break-word;
+      text-align: center;
     }
 
     .popup h2 {
-      font-size: 1.2em;
+      font-size: 1.5em;
       margin: 0;
       text-shadow: 0 0 5px red;
     }
 
     .popup p {
-      font-size: 0.9em;
+      font-size: 1em;
       margin: 5px 0;
     }
 
-    /* Glitch Effect Styles */
-    .glitch {
-      position: absolute;
-      color: lime;
-      font-size: calc(10px + 2vw);
-      font-weight: bold;
-      transform: rotate(0deg);
-      animation: flicker 0.2s infinite;
+    /* 404 Page Styles */
+    .hidden {
+      display: none;
+    }
+
+    .error-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      color: red;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: flicker 1.5s infinite;
+    }
+
+    .error-page h1 {
+      font-size: 8em;
+      margin: 0;
+      text-shadow: 0 0 20px red, 0 0 50px darkred;
+    }
+
+    .error-page p {
+      font-size: 2em;
+      color: white;
     }
   </style>
 </head>
 <body>
+  <!-- Main Content -->
   <h1>YOU GOT PWNED!</h1>
   <p>This is a security audit! Report this breach immediately!</p>
 
-  <!-- Background Chaos -->
+  <!-- Popups -->
+  <div id="popup" class="popup hidden">
+    <h2 id="popup-title"></h2>
+    <p id="popup-message"></p>
+  </div>
+
+  <!-- 404 Error Page -->
+  <div id="error-page" class="error-page hidden">
+    <h1>404</h1>
+    <p>Oops... Looks like something went terribly wrong!</p>
+  </div>
+
   <script>
-    let popupCount = 0;
-    let maxPopups = 3; // Start with a smaller number and grow more slowly
-    let screenCovered = false; // Track if the screen is covered
+    const popupMessages = [
+      { title: "CRITICAL ERROR!", message: "Your system is compromised!" },
+      { title: "SYSTEM BREACH DETECTED!", message: "Unauthorized access identified." },
+      { title: "VIRUS FOUND!", message: "Malicious software detected." },
+      { title: "UNAUTHORIZED ACCESS!", message: "Admin credentials exposed!" }
+    ];
 
-    function createPopup() {
-      const messages = [
-        "CRITICAL ERROR!",
-        "SYSTEM BREACH DETECTED!",
-        "ADMIN PASSWORD EXPOSED!",
-        "UNAUTHORIZED ACCESS!",
-        "VIRUS FOUND!",
-        "NETWORK FAILURE!"
-      ];
+    let currentPopup = 0;
 
-      for (let i = 0; i < maxPopups; i++) {
-        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    function showPopup() {
+      if (currentPopup < popupMessages.length) {
+        const popup = document.getElementById("popup");
+        const title = document.getElementById("popup-title");
+        const message = document.getElementById("popup-message");
 
-        const popup = document.createElement('div');
-        popup.className = 'popup';
-        popup.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
-        popup.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
+        // Set popup content
+        title.textContent = popupMessages[currentPopup].title;
+        message.textContent = popupMessages[currentPopup].message;
 
-        popup.innerHTML = `
-          <h2>${randomMessage}</h2>
-          <p>Your system is at risk! Act now!</p>
-        `;
+        // Show popup
+        popup.classList.remove("hidden");
 
-        document.body.appendChild(popup);
-        popupCount++;
-      }
-
-      // Check if the screen is covered
-      if (popupCount >= 50 && !screenCovered) {
-        screenCovered = true;
+        // Hide popup after 3 seconds
         setTimeout(() => {
-          // Redirect to the fake Error 404 page after a delay
-          window.location.href = "404.html";
-        }, 2000); // Wait 2 seconds before redirecting
-      }
-
-      // Gradually increase the number of popups
-      if (popupCount < 100) { // Cap at 100 popups total
-        maxPopups = Math.min(maxPopups + 1, 10); // Increase popups slowly, max 10 per batch
-        setTimeout(createPopup, 2000); // Add another batch every 2 seconds (slower)
+          popup.classList.add("hidden");
+          currentPopup++;
+          showPopup(); // Show the next popup
+        }, 3000);
+      } else {
+        // Transition to 404 page after the last popup
+        show404Page();
       }
     }
 
-    // Start creating popups
-    createPopup();
+    function show404Page() {
+      const errorPage = document.getElementById("error-page");
+      const mainContent = document.body;
 
-    function createGlitchEffect() {
-      const randomText = "█▓▒░▉▊▋▌▍▌▒░█▓";
-      const glitch = document.createElement('div');
-      glitch.className = 'glitch';
-      glitch.style.left = `${Math.random() * 100}vw`;
-      glitch.style.top = `${Math.random() * 100}vh`;
-      glitch.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
-      glitch.textContent = randomText[Math.floor(Math.random() * randomText.length)];
-
-      document.body.appendChild(glitch);
-      setTimeout(() => glitch.remove(), 300); // Remove glitch after 300ms
+      // Hide main content and show error page
+      mainContent.innerHTML = "";
+      errorPage.classList.remove("hidden");
     }
 
-    // Add glitch effects continuously
-    setInterval(createGlitchEffect, 50);
-
-    function flashBackground() {
-      document.body.style.backgroundColor = ['black', 'red', 'lime', 'darkred'][Math.floor(Math.random() * 4)];
-      setTimeout(() => (document.body.style.backgroundColor = 'black'), 100);
-    }
-
-    // Random background flashes
-    setInterval(flashBackground, 1000);
+    // Start showing popups
+    setTimeout(showPopup, 2000);
   </script>
 </body>
 </html>
+
