@@ -65,37 +65,6 @@
       font-weight: bold;
       transform: rotate(0deg);
     }
-
-    /* 404 Page Styles */
-    .hidden {
-      display: none;
-    }
-
-    .error-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: black;
-      color: red;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    }
-
-    .error-page h1 {
-      font-size: 8em;
-      margin: 0;
-      text-shadow: 0 0 20px red, 0 0 50px darkred;
-    }
-
-    .error-page p {
-      font-size: 2em;
-      color: white;
-    }
   </style>
 </head>
 <body>
@@ -107,12 +76,6 @@
 
   <!-- Popups -->
   <div id="popup-container"></div>
-
-  <!-- 404 Error Page -->
-  <div id="error-page" class="error-page hidden">
-    <h1>404</h1>
-    <p>Oops... Looks like something went terribly wrong!</p>
-  </div>
 
   <script>
     const popupMessages = [
@@ -147,19 +110,8 @@
 
         if (currentPopup < popupMessages.length) {
           setTimeout(showPopup, 3000); // Delay before the next popup
-        } else {
-          setTimeout(show404Page, 6000); // Show 404 page after all popups
         }
       }
-    }
-
-    function show404Page() {
-      const errorPage = document.getElementById("error-page");
-      const mainContent = document.getElementById("main-content");
-
-      // Hide main content and show error page
-      mainContent.style.display = "none";
-      errorPage.classList.remove("hidden");
     }
 
     function createGlitchEffect() {
@@ -174,6 +126,11 @@
       document.body.appendChild(glitch);
       setTimeout(() => glitch.remove(), 500); // Remove glitch after 500ms
     }
+
+    // Redirect to 404.html after 15 seconds
+    setTimeout(() => {
+      window.location.href = "404.html";
+    }, 15000);
 
     // Add glitch effects continuously
     setInterval(createGlitchEffect, 1000); // Glitch spawns once every second
