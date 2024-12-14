@@ -30,7 +30,7 @@
 
     /* Fake Popup */
     .popup {
-      position: absolute;
+      position: absolute; /* This ensures the popup can be placed anywhere */
       width: 300px;
       height: auto;
       background: rgba(0, 0, 0, 0.8);
@@ -39,8 +39,8 @@
       color: white;
       padding: 20px;
       font-size: 1em;
-      z-index: 9999;
       text-align: center;
+      z-index: 9999;
     }
 
     .popup h2 {
@@ -87,14 +87,13 @@
     function getRandomPosition() {
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
-      const x = Math.random() * (viewportWidth - 300); // 300px = popup width
-      const y = Math.random() * (viewportHeight - 100); // 100px = approximate popup height
+      const x = Math.random() * (viewportWidth - 320); // Subtract 320px (popup width + margin)
+      const y = Math.random() * (viewportHeight - 120); // Subtract 120px (popup height + margin)
       return { x, y };
     }
 
     function showPopup() {
       if (currentPopup < popupMessages.length) {
-        const container = document.getElementById("popup-container");
         const popup = document.createElement("div");
         popup.className = "popup";
 
@@ -112,8 +111,8 @@
         popup.style.left = `${x}px`;
         popup.style.top = `${y}px`;
 
-        // Add popup to container
-        container.appendChild(popup);
+        // Add popup to body (not container, as container might interfere with positioning)
+        document.body.appendChild(popup);
 
         // Move to the next popup
         currentPopup++;
