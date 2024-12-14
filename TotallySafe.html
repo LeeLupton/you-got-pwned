@@ -88,7 +88,7 @@
   <!-- Background Chaos -->
   <script>
     let popupCount = 0;
-    let maxPopups = 5; // Start with a smaller number and grow exponentially
+    let maxPopups = 3; // Start with a smaller number and grow more slowly
     let screenCovered = false; // Track if the screen is covered
 
     function createPopup() {
@@ -119,7 +119,7 @@
       }
 
       // Check if the screen is covered
-      if (popupCount >= 100 && !screenCovered) {
+      if (popupCount >= 50 && !screenCovered) {
         screenCovered = true;
         setTimeout(() => {
           // Redirect to the fake Error 404 page after a delay
@@ -127,10 +127,10 @@
         }, 2000); // Wait 2 seconds before redirecting
       }
 
-      // Increase the number of popups gradually
-      if (popupCount < 500) { // Stop after 500 popups to prevent browser crashes
-        maxPopups = Math.min(maxPopups * 1.5, 50); // Exponentially increase popups but cap at 50 per batch
-        setTimeout(createPopup, 1000); // Add another batch every second (half as fast)
+      // Gradually increase the number of popups
+      if (popupCount < 100) { // Cap at 100 popups total
+        maxPopups = Math.min(maxPopups + 1, 10); // Increase popups slowly, max 10 per batch
+        setTimeout(createPopup, 2000); // Add another batch every 2 seconds (slower)
       }
     }
 
@@ -163,4 +163,3 @@
   </script>
 </body>
 </html>
-
