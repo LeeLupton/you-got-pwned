@@ -30,10 +30,7 @@
 
     /* Fake Popup */
     .popup {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      position: absolute;
       width: 300px;
       height: auto;
       background: rgba(0, 0, 0, 0.8);
@@ -87,6 +84,14 @@
 
     let currentPopup = 0;
 
+    function getRandomPosition() {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const x = Math.random() * (viewportWidth - 300); // 300px = popup width
+      const y = Math.random() * (viewportHeight - 100); // 100px = approximate popup height
+      return { x, y };
+    }
+
     function showPopup() {
       if (currentPopup < popupMessages.length) {
         const container = document.getElementById("popup-container");
@@ -101,6 +106,11 @@
 
         popup.appendChild(title);
         popup.appendChild(message);
+
+        // Set random position
+        const { x, y } = getRandomPosition();
+        popup.style.left = `${x}px`;
+        popup.style.top = `${y}px`;
 
         // Add popup to container
         container.appendChild(popup);
