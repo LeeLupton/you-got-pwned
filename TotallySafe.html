@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOU GOT PWNED</title>
+  <style>
+    /* General Styles */
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+    }
+
+    h1 {
+      font-size: 6em;
+      text-shadow: 0 0 20px red, 0 0 50px darkred;
+      animation: flicker 1.5s infinite;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    p {
+      font-size: 2em;
+      text-align: center;
+      animation: slide-in 2s ease-out forwards;
+      color: white;
+    }
+
+    /* Keyframes for animations */
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes popup {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes slide-in {
+      0% { transform: translateY(100%); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Fake Popups */
+    .popup {
+      position: absolute;
+      width: 300px;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid red;
+      box-shadow: 0 0 20px red;
+      color: white;
+      padding: 20px;
+      font-size: 1.2em;
+      animation: popup 0.8s ease-out forwards;
+      z-index: 9999;
+    }
+
+    /* Random popup positions */
+    .popup:nth-child(1) { top: 10%; left: 20%; }
+    .popup:nth-child(2) { top: 40%; left: 50%; }
+    .popup:nth-child(3) { top: 70%; left: 10%; }
+
+    /* Buttons */
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      color: red;
+      border: 2px solid red;
+      text-transform: uppercase;
+      font-size: 1em;
+      cursor: pointer;
+      animation: flicker 2s infinite;
+      margin-top: 20px;
+      background: none;
+    }
+
+    .button:hover {
+      color: black;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>YOU GOT PWNED!</h1>
+  <p>This is a security audit! Report this breach immediately!</p>
+
+  <!-- Fake Popups -->
+  <div class="popup">Critical Error! Data Breach Detected!</div>
+  <div class="popup">Your system is vulnerable! Take action now!</div>
+  <div class="popup">Admin credentials exposed! 😱</div>
+
+  <!-- Button -->
+  <div style="text-align: center;">
+    <a class="button" href="https://www.github.com/">Click to Fix</a>
+  </div>
+
+  <!-- Background Chaos -->
+  <script>
+    function createGlitchEffect() {
+      const randomText = "█▓▒░▉▉▊▊▋▋▍▍▌▌▌▒░█▓";
+      const glitch = document.createElement('div');
+      glitch.style.position = "absolute";
+      glitch.style.color = "lime";
+      glitch.style.fontSize = Math.random() * 20 + 10 + "px";
+      glitch.style.left = Math.random() * 100 + "vw";
+      glitch.style.top = Math.random() * 100 + "vh";
+      glitch.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+      glitch.style.zIndex = "999";
+      glitch.textContent = randomText[Math.floor(Math.random() * randomText.length)];
+      document.body.appendChild(glitch);
+      setTimeout(() => glitch.remove(), 500);
+    }
+
+    setInterval(createGlitchEffect, 100); // Generate glitches every 100ms
+  </script>
+</body>
+</html>
