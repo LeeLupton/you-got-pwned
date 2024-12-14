@@ -43,11 +43,6 @@
       100% { transform: scale(1); }
     }
 
-    @keyframes slide-in {
-      0% { transform: translateY(100%); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
-    }
-
     /* Fake Popups */
     .popup {
       position: absolute;
@@ -93,6 +88,7 @@
   <!-- Background Chaos -->
   <script>
     let popupCount = 0;
+    let maxPopups = 5; // Start with a smaller number and grow exponentially
 
     function createPopup() {
       const messages = [
@@ -104,24 +100,27 @@
         "NETWORK FAILURE!"
       ];
 
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      for (let i = 0; i < maxPopups; i++) {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-      const popup = document.createElement('div');
-      popup.className = 'popup';
-      popup.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
-      popup.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
+        popup.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
 
-      popup.innerHTML = `
-        <h2>${randomMessage}</h2>
-        <p>Your system is at risk! Act now!</p>
-      `;
+        popup.innerHTML = `
+          <h2>${randomMessage}</h2>
+          <p>Your system is at risk! Act now!</p>
+        `;
 
-      document.body.appendChild(popup);
-      popupCount++;
+        document.body.appendChild(popup);
+        popupCount++;
+      }
 
-      // Stop adding popups after 1 minute
-      if (popupCount < 200) {
-        setTimeout(createPopup, Math.random() * 500); // Add another popup every 0.5s
+      // Increase the number of popups exponentially over time
+      if (popupCount < 500) { // Stop after 500 popups to prevent browser crashes
+        maxPopups = Math.min(maxPopups * 1.5, 50); // Exponentially increase popups but cap at 50 per batch
+        setTimeout(createPopup, 500); // Add another batch every 0.5 seconds
       }
     }
 
@@ -154,4 +153,3 @@
   </script>
 </body>
 </html>
-
