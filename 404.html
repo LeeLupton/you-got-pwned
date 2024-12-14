@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Error</title>
+  <style>
+    /* General Styles */
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+    }
+
+    h1 {
+      font-size: 8em;
+      text-align: center;
+      margin-top: 10%;
+      text-shadow: 0 0 20px red, 0 0 50px darkred;
+      animation: glitch 1.5s infinite;
+    }
+
+    p {
+      font-size: 2em;
+      text-align: center;
+      color: white;
+      text-shadow: 0 0 5px lime;
+      animation: flicker 2s infinite;
+    }
+
+    /* Keyframes for Animations */
+    @keyframes glitch {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-5px, 5px); }
+      50% { transform: translate(5px, -5px); }
+      75% { transform: translate(-5px, -5px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes glitch-lines {
+      0% { opacity: 1; transform: scaleX(1); }
+      50% { opacity: 0.1; transform: scaleX(1.5); }
+      100% { opacity: 1; transform: scaleX(1); }
+    }
+
+    /* Glitch Lines */
+    .glitch-line {
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      background: red;
+      opacity: 0.5;
+      animation: glitch-lines 0.3s infinite;
+    }
+
+    .line1 { top: 20%; animation-delay: 0.2s; }
+    .line2 { top: 50%; animation-delay: 0.5s; }
+    .line3 { top: 80%; animation-delay: 0.7s; }
+
+    /* Glitch Characters */
+    .glitch-char {
+      position: absolute;
+      font-size: 3em;
+      color: lime;
+      text-shadow: 0 0 10px red, 0 0 20px lime;
+      animation: glitch 0.5s infinite, flicker 0.1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- 404 Message -->
+  <h1>404 ERROR</h1>
+  <p>Page not found. Your system is at risk!</p>
+
+  <!-- Glitch Lines -->
+  <div class="glitch-line line1"></div>
+  <div class="glitch-line line2"></div>
+  <div class="glitch-line line3"></div>
+
+  <script>
+    function createGlitchChar() {
+      const glitchChar = document.createElement('div');
+      glitchChar.className = 'glitch-char';
+      glitchChar.textContent = "█▓▒░"[Math.floor(Math.random() * 4)];
+      glitchChar.style.left = `${Math.random() * 100}vw`;
+      glitchChar.style.top = `${Math.random() * 100}vh`;
+      glitchChar.style.transform = `rotate(${Math.random() * 360}deg)`;
+      glitchChar.style.animationDelay = `${Math.random()}s`;
+      
+      document.body.appendChild(glitchChar);
+      setTimeout(() => glitchChar.remove(), 1000); // Remove after 1 second
+    }
+
+    // Add glitch characters continuously
+    setInterval(createGlitchChar, 200);
+  </script>
+</body>
+</html>
