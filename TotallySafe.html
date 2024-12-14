@@ -13,13 +13,11 @@
       margin: 0;
       padding: 0;
       overflow: hidden; /* Prevent scrolling */
-      transition: all 1s ease-in-out; /* Smooth transition for 404 effect */
     }
 
     h1 {
       font-size: 6em;
       text-shadow: 0 0 20px red, 0 0 50px darkred;
-      animation: flicker 1.5s infinite;
       margin: 50px auto;
       text-align: center;
     }
@@ -30,11 +28,14 @@
       color: white;
     }
 
-    /* Keyframes for animations */
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.4; }
-      100% { opacity: 1; }
+    /* Keyframes for glitch and popup animations */
+    @keyframes glitch {
+      0% { opacity: 1; transform: translate(0, 0); }
+      20% { opacity: 0.8; transform: translate(-2px, 2px); }
+      40% { opacity: 1; transform: translate(2px, -2px); }
+      60% { opacity: 0.8; transform: translate(-2px, -2px); }
+      80% { opacity: 1; transform: translate(2px, 2px); }
+      100% { opacity: 1; transform: translate(0, 0); }
     }
 
     @keyframes popup {
@@ -73,6 +74,16 @@
       margin: 5px 0;
     }
 
+    /* Glitch Effect */
+    .glitch {
+      position: absolute;
+      color: lime;
+      font-size: calc(10px + 2vw);
+      font-weight: bold;
+      transform: rotate(0deg);
+      animation: glitch 0.3s infinite;
+    }
+
     /* 404 Page Styles */
     .hidden {
       display: none;
@@ -91,7 +102,6 @@
       align-items: center;
       justify-content: center;
       z-index: 10000;
-      animation: flicker 1.5s infinite;
     }
 
     .error-page h1 {
@@ -112,10 +122,7 @@
   <p>This is a security audit! Report this breach immediately!</p>
 
   <!-- Popups -->
-  <div id="popup" class="popup hidden">
-    <h2 id="popup-title"></h2>
-    <p id="popup-message"></p>
-  </div>
+  <div id="popup-container"></div>
 
   <!-- 404 Error Page -->
   <div id="error-page" class="error-page hidden">
@@ -135,26 +142,30 @@
 
     function showPopup() {
       if (currentPopup < popupMessages.length) {
-        const popup = document.getElementById("popup");
-        const title = document.getElementById("popup-title");
-        const message = document.getElementById("popup-message");
+        const container = document.getElementById("popup-container");
+        const popup = document.createElement("div");
+        popup.className = "popup";
 
-        // Set popup content
+        const title = document.createElement("h2");
         title.textContent = popupMessages[currentPopup].title;
+
+        const message = document.createElement("p");
         message.textContent = popupMessages[currentPopup].message;
 
-        // Show popup
-        popup.classList.remove("hidden");
+        popup.appendChild(title);
+        popup.appendChild(message);
 
-        // Hide popup after 3 seconds
-        setTimeout(() => {
-          popup.classList.add("hidden");
-          currentPopup++;
-          showPopup(); // Show the next popup
-        }, 3000);
-      } else {
-        // Transition to 404 page after the last popup
-        show404Page();
+        // Add popup to container
+        container.appendChild(popup);
+
+        // Move to the next popup
+        currentPopup++;
+
+        if (currentPopup < popupMessages.length) {
+          setTimeout(showPopup, 3000); // Delay before the next popup
+        } else {
+          setTimeout(show404Page, 6000); // Show 404 page after all popups
+        }
       }
     }
 
@@ -163,13 +174,29 @@
       const mainContent = document.body;
 
       // Hide main content and show error page
-      mainContent.innerHTML = "";
+      document.querySelector("h1").classList.add("hidden");
+      document.querySelector("p").classList.add("hidden");
       errorPage.classList.remove("hidden");
     }
+
+    function createGlitchEffect() {
+      const randomText = "█▓▒░▉▊▋▌▍▌▒░█▓";
+      const glitch = document.createElement("div");
+      glitch.className = "glitch";
+      glitch.style.left = `${Math.random() * 100}vw`;
+      glitch.style.top = `${Math.random() * 100}vh`;
+      glitch.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
+      glitch.textContent = randomText[Math.floor(Math.random() * randomText.length)];
+
+      document.body.appendChild(glitch);
+      setTimeout(() => glitch.remove(), 300); // Remove glitch after 300ms
+    }
+
+    // Add glitch effects continuously
+    setInterval(createGlitchEffect, 100);
 
     // Start showing popups
     setTimeout(showPopup, 2000);
   </script>
 </body>
 </html>
-
