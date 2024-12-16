@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your pc = my pc now!</title>
+  <style>
+    /* General Styles */
+    body {
+      background-color: black;
+      color: red;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+    }
+
+    h1 {
+      font-size: 6em;
+      text-shadow: 0 0 20px red, 0 0 50px darkred;
+      margin: 50px auto;
+      text-align: center;
+    }
+
+    p {
+      font-size: 2em;
+      text-align: center;
+      color: white;
+    }
+
+    /* Fake Popups */
+    .popup {
+      position: absolute;
+      width: 200px;
+      height: 150px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid red;
+      box-shadow: 0 0 20px red;
+      color: white;
+      padding: 10px;
+      font-size: 1em;
+      animation: popup 0.8s ease-out forwards;
+      z-index: 9999;
+      overflow-wrap: break-word;
+    }
+
+    .popup h2 {
+      font-size: 1.2em;
+      margin: 0;
+      text-shadow: 0 0 5px red;
+    }
+
+    .popup p {
+      font-size: 0.9em;
+      margin: 5px 0;
+    }
+
+    /* Glitch Effect Styles */
+    .glitch {
+      position: absolute;
+      color: lime;
+      font-size: calc(10px + 2vw);
+      font-weight: bold;
+      transform: rotate(0deg);
+      animation: flicker 0.2s infinite;
+    }
+  </style>
+</head>
+<body>
+  <h1>YOU GOT PWNED!</h1>
+  <p>This is a security audit! Report this to Lee immediately!</p>
+
+  <!-- Background Chaos -->
+  <script>
+    let popupCount = 0;
+    const maxPopups = 8; // Limit to 8 popups
+
+    function createPopup() {
+      const messages = [
+        "CRITICAL ERROR!",
+        "SYSTEM BREACH DETECTED!",
+        "ADMIN PASSWORD EXPOSED!",
+        "UNAUTHORIZED ACCESS!",
+        "VIRUS FOUND!",
+        "NETWORK FAILURE!"
+      ];
+
+      if (popupCount < maxPopups) {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
+        popup.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
+
+        popup.innerHTML = `
+          <h2>${randomMessage}</h2>
+          <p>Your system is at risk! Contact Lee! </p>
+        `;
+
+        document.body.appendChild(popup);
+        popupCount++;
+
+        // Spawn the next popup after 3 seconds
+        if (popupCount < maxPopups) {
+          setTimeout(createPopup, 3000);
+        } else {
+          // Redirect to 404.html after all popups
+          setTimeout(() => {
+            window.location.href = "404.html";
+          }, 3000);
+        }
+      }
+    }
+
+    // Start creating popups
+    setTimeout(createPopup, 2000);
+
+    function createGlitchEffect() {
+      const randomText = "█▓▒░▉▊▋▌▍▌▒░█▓";
+      const glitch = document.createElement('div');
+      glitch.className = 'glitch';
+      glitch.style.left = `${Math.random() * 100}vw`;
+      glitch.style.top = `${Math.random() * 100}vh`;
+      glitch.style.transform = `rotate(${Math.random() * 360}deg) scale(${Math.random() * 2})`;
+      glitch.textContent = randomText[Math.floor(Math.random() * randomText.length)];
+
+      document.body.appendChild(glitch);
+      setTimeout(() => glitch.remove(), 300); // Remove glitch after 300ms
+    }
+
+    // Add glitch effects continuously
+    setInterval(createGlitchEffect, 100);
+
+    function flashBackground() {
+      document.body.style.backgroundColor = ['black', 'red', 'lime', 'darkred'][Math.floor(Math.random() * 4)];
+      setTimeout(() => (document.body.style.backgroundColor = 'black'), 100);
+    }
+
+    // Random background flashes
+    setInterval(flashBackground, 1000);
+  </script>
+</body>
+</html>
